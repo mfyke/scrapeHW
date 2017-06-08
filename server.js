@@ -55,40 +55,36 @@ app.use("/", controller);
 
 // A GET request to scrape the echojs website
 app.get("/scrape", function(req, res) {
-  // First, we grab the body of the html with request
-  request("https://www.reddit.com/", function(error, response, html) {
-    // Then, we load that into cheerio and save it to $ for a shorthand selector
-    var $ = cheerio.load(html);
-    // Now, we grab every h2 within an article tag, and do the following:
-    $("p.title").each(function(i, element) {
-
-      // Save an empty result object
-      var result = {};
-
-      // Add the text and href of every link, and save them as properties of the result object
-      result.title = $(this).text();
-      result.link = $(this).children().attr("href");
-
-      // Using our Article model, create a new entry
-      // This effectively passes the result object to the entry (and the title and link)
-      var entry = new Article(result);
-
-      // Now, save that entry to the db
-      entry.save(function(err, doc) {
-        // Log any errors
-        if (err) {
-          console.log(err);
+  Article.find({}, function(error, docs) {
+    request("https://www.reddit.com/r/buildapcsales", function(error, response, html) {
+      var $ = cheerio.load(html);
+      $("p.title").each(function(i, element) {
+        var result = {};
+        result.title = $(this).text();
+        result.link = $(this).children().attr("href");
+        var checkDupe = false;
+        for(var i = 0; i < docs.length; i++) {
+          if(docs[i].title === result.title) {
+            checkDupe = true;
+          }
         }
-        // Or log the doc
-        else {
-          console.log(doc);
+        if(checkDupe) {
+          console.log("Nope.gif");
+        } else {
+          var entry = new Article(result);
+          entry.save(function(err, doc) {
+            if (err) {
+              console.log(err);
+            }
+            else {
+              console.log(doc);
+            }
+          });          
         }
       });
-
-    });
-  });
-  // Tell the browser that we finished scraping the text
-  res.redirect("/");
+      res.redirect("/");
+    });    
+  })
 });
 
 // app.get("/", function (req, res) {
