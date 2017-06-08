@@ -36,7 +36,7 @@ app.use(bodyParser.urlencoded({
 
 
 // Database configuration with mongoose
-mongoose.connect("mongodb://localhost/scrapeHW");
+mongoose.connect("mongodb://heroku_v3m0qpjx:8dk08p0atcrc1jd3s9ch43ud54@ds117592.mlab.com:17592/heroku_v3m0qpjx");
 var db = mongoose.connection;
 
 // Show any mongoose errors
