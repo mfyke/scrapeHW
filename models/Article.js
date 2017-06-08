@@ -9,6 +9,14 @@ var ArticleSchema = new Schema({
   title: {
     type: String,
     required: true
+    validate: {
+          validator: function(v, cb) {
+            User.find({title: v}, function(err,docs){
+               cb(docs.length == 0);
+            });
+          },
+          message: 'User already exists!'
+        }
   },
   // link is a required string
   link: {
