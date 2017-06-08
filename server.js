@@ -56,7 +56,7 @@ app.use("/", controller);
 // A GET request to scrape the echojs website
 app.get("/scrape", function(req, res) {
   Article.find({}, function(error, docs) {
-    request("https://www.reddit.com/r/buildapcsales", function(error, response, html) {
+    request("https://www.reddit.com", function(error, response, html) {
       var $ = cheerio.load(html);
       $("p.title").each(function(i, element) {
         var result = {};
