@@ -1,6 +1,4 @@
-/* Showing Mongoose's "Populated" Method (18.3.8)
- * INSTRUCTOR ONLY
- * =============================================== */
+
 
 // Dependencies
 var express = require("express");
@@ -13,13 +11,21 @@ var Article = require("./models/Article.js");
 // Our scraping tools
 var request = require("request");
 var cheerio = require("cheerio");
-// Set mongoose to leverage built in JavaScript ES6 Promises
+var exphbs = require("express-handlebars");
+var path = require("path");
+var router = express.Router();
+var controller = require("./controller");
 mongoose.Promise = Promise;
 
 
 // Initialize Express
 var app = express();
 
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+app.set("views", path.join(__dirname, "/views"));
+
+app.use(express.static(process.cwd() + "/public"));
 // Use morgan and body parser with our app
 app.use(logger("dev"));
 app.use(bodyParser.urlencoded({
@@ -27,10 +33,10 @@ app.use(bodyParser.urlencoded({
 }));
 
 // Make public a static dir
-app.use(express.static("public"));
+
 
 // Database configuration with mongoose
-mongoose.connect("mongodb://localhost/week18day3mongoose");
+mongoose.connect("mongodb://localhost/scrapeHW");
 var db = mongoose.connection;
 
 // Show any mongoose errors
@@ -43,25 +49,25 @@ db.once("open", function() {
   console.log("Mongoose connection successful.");
 });
 
-
+app.use("/", controller);
 // Routes
 // ======
 
 // A GET request to scrape the echojs website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with request
-  request("http://www.echojs.com/", function(error, response, html) {
+  request("https://www.reddit.com/", function(error, response, html) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(html);
     // Now, we grab every h2 within an article tag, and do the following:
-    $("article h2").each(function(i, element) {
+    $("p.title").each(function(i, element) {
 
       // Save an empty result object
       var result = {};
 
       // Add the text and href of every link, and save them as properties of the result object
-      result.title = $(this).children("a").text();
-      result.link = $(this).children("a").attr("href");
+      result.title = $(this).text();
+      result.link = $(this).children().attr("href");
 
       // Using our Article model, create a new entry
       // This effectively passes the result object to the entry (and the title and link)
@@ -85,6 +91,9 @@ app.get("/scrape", function(req, res) {
   res.send("Scrape Complete");
 });
 
+// app.get("/", function (req, res) {
+//   res.render("index");
+// });
 // This will get the articles we scraped from the mongoDB
 app.get("/articles", function(req, res) {
   // Grab every doc in the Articles array
@@ -152,6 +161,6 @@ app.post("/articles/:id", function(req, res) {
 
 
 // Listen on port 3000
-app.listen(3000, function() {
+app.listen(process.env.PORT || 3000, function() {
   console.log("App running on port 3000!");
 });
