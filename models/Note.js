@@ -3,13 +3,18 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var NoteSchema = new Schema({
- 
   title: {
-    type: String
+    type: String,
+    required: true
   },
-
   body: {
-    type: String
+    type: String,
+    required: true
+  },
+  articleId: {
+  	type: Schema.Types.ObjectId,
+  	ref: "Article",
+  	required: true
   }
 });
 

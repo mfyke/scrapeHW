@@ -78,22 +78,19 @@ router.get("/articles/:id", function(req, res) {
 });
 
 router.post("/articles/:id", function(req, res) {
-  var newNote = new Note(req.body);
+  var note = {};
+  note.title = req.body.title;
+  note.body = req.body.body;
+  note.articleId = req.body.articleId;
+  var newNote = new Note(note);
 
   newNote.save(function(error, doc) {
     if (error) {
       console.log(error);
     }
     else {
-      Article.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
-      .exec(function(err, doc) {
-        if (err) {
-          console.log(err);
-        }
-        else {
-          res.send(doc);
-        }
-      });
+      console.log(doc);
+      res.redirect("/");
     }
   });
 });

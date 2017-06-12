@@ -36,7 +36,8 @@ $(document).on("click", "#savenote", function() {
     url: "/articles/" + thisId,
     data: {
       title: $("#titleinput").val(),
-      body: $("#bodyinput").val()
+      body: $("#bodyinput").val(),
+      articleId: thisId
     }
   })
     .done(function(data) {
