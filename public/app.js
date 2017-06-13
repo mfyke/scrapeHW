@@ -1,12 +1,12 @@
 $.getJSON("/articles", function(data) {
   for (var i = 0; i < data.length; i++) {
-    $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + "<a href='" + data[i].link + "'>" + "link" + "</a>" + "</p>");
+    $("#articles").prepend("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + "<a href='" + data[i].link + "'>" + "link" + "</a>" + "</p>");
   }
   
 });
 
 $(document).on("click", "p", function() {
-  // $("#notes").empty();
+  $("#notes").empty();
   var thisId = $(this).attr("data-id");
 
 
@@ -21,6 +21,10 @@ $(document).on("click", "p", function() {
       $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
       $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
 
+      // var path = '/notes/' + $(this).attr("data-id").toString();
+      // $.get(path, function(res) {
+      // $("#comments").html(res);
+      // });
       // if (data.note) {
       //   $("#titleinput").val(data.note.title);
       //   $("#bodyinput").val(data.note.body);
@@ -52,6 +56,22 @@ $(document).on("click", "#savenote", function() {
  $(document).on("click", "p", function(e) {
     var path = '/notes/' + $(this).attr("data-id").toString();
     $.get(path, function(res) {
-      $("#notes").html(res);
+      $("#notes").append(res);
+    });
+  });
+
+  $(".delete-note-btn").on("click", function(e) {
+    e.preventDefault();
+    var noteid = $(this).attr("data-id").toString();
+    $.ajax({
+        url: "/delete-note/" + noteid,
+        method: "DELETE",
+        success: function(res) {
+            console.log(res);
+            $("#note-"+noteid).remove();
+        }, 
+        catch: function(err) {
+            console.log(err);
+        }
     });
   });

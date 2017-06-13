@@ -1,0 +1,6 @@
+{{#if notes}} {{#each notes}}
+		<div id="note-{{this.id}}">
+			<h2>{{this.title}}: {{this.body}}</h2><br>
+			<button class="btn btn-danger btn-sm delete-note-btn" data-id="{{this.id}}">X</button>
+		</div>	
+{{/each}} {{/if}}

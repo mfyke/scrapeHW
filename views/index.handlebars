@@ -4,12 +4,6 @@
 </div>
 <div id="articles"></div>
 <div id="notes">
-	{{#if notes}} {{#each notes}}
-		<div id="note-{{this.id}}">
-			{{this.title}}
-			<div>
-				<span>{{this.body}} <button class="btn pull-right btn-danger btn-sm delete-note-btn" data-id="{{this.id}}">X</button> </span>
-			</div>
-		</div>	
-	{{/each}} {{/if}}
+	<div id="comments">
+	</div>
 </div>

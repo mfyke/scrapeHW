@@ -100,7 +100,7 @@ router.get("/notes/:articleId", function(req, res) {
     if (err) {
       console.log(err);
     } else {
-      res.render("index", {notes: doc, articleId: req.params.articleId});
+      res.render("partials/notes", {notes: doc, articleId: req.params.articleId});
     }
   });
 });

@@ -1,5 +1,5 @@
 body { 
-  background-color: #F2F6D0 
+  background-color: rgb(153,102,153);
 }
 #wrapper {
   width: 960px;
@@ -12,6 +12,7 @@ body {
   overflow: auto;
   width: 60%;
   height: 700px;
+  background-color: #fff;
 }
 #notes {
   float: right;
