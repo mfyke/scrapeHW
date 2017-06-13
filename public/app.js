@@ -6,7 +6,7 @@ $.getJSON("/articles", function(data) {
 });
 
 $(document).on("click", "p", function() {
-  $("#notes").empty();
+  // $("#notes").empty();
   var thisId = $(this).attr("data-id");
 
 
@@ -21,10 +21,10 @@ $(document).on("click", "p", function() {
       $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
       $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
 
-      if (data.note) {
-        $("#titleinput").val(data.note.title);
-        $("#bodyinput").val(data.note.body);
-      }
+      // if (data.note) {
+      //   $("#titleinput").val(data.note.title);
+      //   $("#bodyinput").val(data.note.body);
+      // }
     });
 });
 
@@ -48,3 +48,10 @@ $(document).on("click", "#savenote", function() {
   $("#titleinput").val("");
   $("#bodyinput").val("");
 });
+
+ $(document).on("click", "p", function(e) {
+    var path = '/notes/' + $(this).attr("data-id").toString();
+    $.get(path, function(res) {
+      $("#notes").html(res);
+    });
+  });
