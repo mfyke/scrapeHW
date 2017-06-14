@@ -27,8 +27,8 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
-// mongoose.connect("mongodb://heroku_v3m0qpjx:8dk08p0atcrc1jd3s9ch43ud54@ds117592.mlab.com:17592/heroku_v3m0qpjx");
-mongoose.connect("mongodb://localhost/redditscrapedb");
+mongoose.connect("mongodb://heroku_v3m0qpjx:8dk08p0atcrc1jd3s9ch43ud54@ds117592.mlab.com:17592/heroku_v3m0qpjx");
+// mongoose.connect("mongodb://localhost/redditscrapedb");
 var db = mongoose.connection;
 
 db.on("error", function(error) {
