@@ -11,13 +11,12 @@ $(document).on("click", "p", function() {
 
 
   $.ajax({
+    async: true,
     method: "GET",
     url: "/articles/" + thisId
   })
     .done(function(data) {
       $("#notes").empty();
-      return data;
-    }).done(function(data){
       console.log(data);
       $("#notes").append("<h2>" + data.title + "</h2>");
       $("#notes").append("<input id='titleinput' name='title' >")
@@ -32,13 +31,20 @@ $(document).on("click", "p", function() {
       //   $("#titleinput").val(data.note.title);
       //   $("#bodyinput").val(data.note.body);
       // }
-    }).done(function(data) {
-      var path = '/notes/' + thisId;
-      $.get(path, function(res) {
-        $("#comments").empty();
-        $("#comments").append(res);
-      });
     });
+    // var path = '/notes/' + thisId;
+  $.ajax({
+    async: true,
+    method: "GET",
+    url: "/notes/" + thisId
+  }).done(function(data){
+      $("#comments").empty();
+      $("#comments").append(data);
+  });
+    // $.get(path, function(res) {
+    //   $("#comments").empty();
+    //   $("#comments").append(res);
+    // });
 });
 
 $(document).on("click", "#savenote", function() {
