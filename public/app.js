@@ -1,12 +1,12 @@
-$.getJSON("/articles", function(data) {
-  for (var i = 0; i < data.length; i++) {
-    $("#articles").prepend("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + "<a href='" + data[i].link + "'>" + "link" + "</a>" + "</p>");
-  }
-  
-});
+
+  $.getJSON("/articles", function(data) {
+    for (var i = 0; i < data.length; i++) {
+      $("#articles").prepend("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + "<a href='" + data[i].link + "'>" + "link" + "</a>" + "</p>");
+    }
+  });
 
 $(document).on("click", "p", function() {
-  $("#notes").empty();
+
   var thisId = $(this).attr("data-id");
 
 
@@ -15,6 +15,9 @@ $(document).on("click", "p", function() {
     url: "/articles/" + thisId
   })
     .done(function(data) {
+      $("#notes").empty();
+      return data;
+    }).done(function(data){
       console.log(data);
       $("#notes").append("<h2>" + data.title + "</h2>");
       $("#notes").append("<input id='titleinput' name='title' >")
@@ -29,6 +32,12 @@ $(document).on("click", "p", function() {
       //   $("#titleinput").val(data.note.title);
       //   $("#bodyinput").val(data.note.body);
       // }
+    }).done(function(data) {
+      var path = '/notes/' + thisId;
+      $.get(path, function(res) {
+        $("#comments").empty();
+        $("#comments").append(res);
+      });
     });
 });
 
@@ -47,18 +56,19 @@ $(document).on("click", "#savenote", function() {
     .done(function(data) {
       console.log(data);
       $("#notes").empty();
+      $("#comments").empty();
     });
 
   $("#titleinput").val("");
   $("#bodyinput").val("");
 });
 
- $(document).on("click", "p", function(e) {
-    var path = '/notes/' + $(this).attr("data-id").toString();
-    $.get(path, function(res) {
-      $("#notes").append(res);
-    });
-  });
+ // $(document).on("click", "p", function(e) {
+ //    var path = '/notes/' + $(this).attr("data-id").toString();
+ //    $.get(path, function(res) {
+ //      $("#notes").append(res);
+ //    });
+ //  });
 
   $(".delete-note-btn").on("click", function(e) {
     e.preventDefault();

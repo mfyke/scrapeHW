@@ -1,22 +1,27 @@
 body { 
   background-color: rgb(153,102,153);
 }
-#wrapper {
+/*#wrapper {
   width: 960px;
   margin-left: auto;
   margin-right: auto;
   padding-top: 5%;
-}
+}*/
 #articles {
   display: inline-block;
   overflow: auto;
-  width: 60%;
   height: 700px;
   background-color: #fff;
 }
-#notes {
+/*#notes {
   float: right;
   width: 30%;
+}
+#comments{
+  float:right;
+}*/
+#scrapeBtn {
+  margin-bottom: 20px;
 }
 textarea, input {
   display: block;
